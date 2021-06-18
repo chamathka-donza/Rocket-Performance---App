@@ -27,6 +27,7 @@ app.get('/api/products', (req, res) =>{
 });
 
 app.get('/api/product/:id', (req, res) =>{
+    console.log("Params id", req.params.id)
     const product = data.products.filter(p => {if(p.p_id == req.params.id) return true})
     res.send(product[0]);
     console.log(data.products)
