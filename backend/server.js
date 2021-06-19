@@ -21,26 +21,27 @@ mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/RocketPerforman
 
 app.use(cors())
 
-app.get('/api/products', (req, res) =>{
-    res.send(data.products);
-    // console.log(data.products)
-});
+// app.get('/api/products', (req, res) =>{
+//     res.send(data.products);
+//     console.log(data.products)
+// });
 
-app.get('/api/product/:id', (req, res) =>{
-    console.log("Params id", req.params.id)
-    const product = data.products.filter(p => {if(p.p_id == req.params.id) return true})
-    res.send(product[0]);
-    console.log(data.products)
-});
+// app.get('/api/product/:id', (req, res) =>{
+//     console.log("Params id", req.params .id)
+//     const product = data.products.filter(p => {if(p.p_id == req.params.id) return true})
+//     res.send(product[0]);
+//     console.log(data.products)
+// });
 
 app.get('/api/sections', (req, res) =>{
     res.send(data.sections);
-    console.log(data.sections);
+    // console.log(data.sections);
 });
 
 app.use('/api/users', userRouter);
-// app.use('/api/products', productRouter);
+app.use('/api/products', productRouter);
 app.use('/api/orders', orderRouter);
+
 app.get('/',(req, res) => {
     res.send('Server is ready');
 });
