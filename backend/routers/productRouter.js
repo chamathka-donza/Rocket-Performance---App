@@ -2,7 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import Product from '../models/productModel.js';
-import { generateToken } from '../utils.js';
+import { generateToken, isAdmin, isAuth } from '../utils.js';
 
 const productRouter = express.Router();
 
@@ -31,33 +31,21 @@ productRouter.get('/:id', expressAsyncHandler(async(req, res) =>{
     }
 }));
 
-productRouter.post('/addProduct', expressAsyncHandler(async(req, res) =>{
-    const product = Product({
-        c_id: req.body.c_id,
-        catogory: req.body.catogory,
-        name: req.body.name,
-        image: req.body.image,
-        price: req.body.price,
-        description: req.body.description,
-        countInStock: req.body.countInStock
+productRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async(req, res) =>{
+    const product = new Product({
+        c_id:0,
+        catogory: 'sample catogory',
+        name: 'sample name' + Date.now(),
+        image:'/images/p1.jpg',
+        price:0,
+        description:'sample description',
+        countInStock:0
+
 
     });
     const createdProduct = await product.save();
-    res.send({
-
-        _id: createdProduct._id,
-        c_id: createdProduct.c_id,
-        catogory: createdProduct.catogory,
-        name: createdProduct.name,
-        image: createdProduct.image,
-        price: createdProduct.price,
-        description: createdProduct.description,
-        countInStock: createdProduct.countInStock,
-        token: generateToken(createdProduct),
-    })
-}
-
-
-))
+    res.send({message: 'Product Created Successfully', product: createdProduct });
+})
+); 
 
 export default productRouter;
