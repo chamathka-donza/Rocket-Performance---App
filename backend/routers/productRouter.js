@@ -48,4 +48,23 @@ productRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async(req, res) =>{
 })
 ); 
 
+productRouter.put('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if(product){
+        product.c_id = req.body.c_id;
+        product.catogory = req.body.catogory;
+        product.name = req.body.name;
+        product.image = req.body.image;
+        product.price = req.body.price;
+        product.description = req.body.description;
+        product.countInStock = req.body.countInStock;
+        const updatedProduct = await product.save();
+        res.send({message:'Product Updated', product: updatedProduct});
+
+    }else{
+        res.status(404).send({message:'Product Not Found'});
+    }
+}));
+
 export default productRouter;
