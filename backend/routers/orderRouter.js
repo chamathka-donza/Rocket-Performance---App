@@ -5,6 +5,11 @@ import { isAuth } from '../utils.js';
 
 const orderRouter = express.Router();
 
+orderRouter.get('/mine', isAuth, expressAsyncHandler(async(req, res) =>{
+    const orders = await Order.find({user: req.user._id});
+    res.send(orders);
+}));
+
 orderRouter.post('/', isAuth, expressAsyncHandler(async(req, res) =>{
     if(req.body.orderItems.length === 0){
         res.status(400).send({ message: 'Cart is Empty'});
@@ -13,8 +18,8 @@ orderRouter.post('/', isAuth, expressAsyncHandler(async(req, res) =>{
             orderItems: req.body.orderItems,
             // customerDetails: req.body.customerDetails,
             itemsPrice: req.body.itemsPrice,
-            // totalprice: req.body.totalprice,
-            // user: req.user._id,
+            // totalPrice: req.body.totalPrice,
+            user: req.user._id,
 
         });
         const createdOrder = await order.save();
