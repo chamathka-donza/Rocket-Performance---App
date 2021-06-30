@@ -7,14 +7,26 @@ import { generateToken, isAdmin, isAuth } from '../utils.js';
 const productRouter = express.Router();
 
 productRouter.get('/', expressAsyncHandler(async(req, res) =>{
-    const products = await Product.find({});
+    const name = req.query.name || '';
+    const category = req.query.category || '';
+    // const brand = req.query.brand || '';
+    const nameFilter = name ? {name: {$regex: name, $options: 'i'}} : {};
+    const categoryFilter = category ? { category } : {};
+    // const brandFilter = brand ? { brand } : {};
+    const products = await Product.find({...nameFilter, ...categoryFilter}).populate();
     res.send(products);
 }));
+
+productRouter.get('/categories', expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct('category');
+    res.send(categories);
+}));
+
 
 productRouter.get(
     '/seed', 
     expressAsyncHandler(async(req, res) =>{
-    //  await Product.remove({}); 
+    // await Product.remove({});  
     const createdProducts = await Product.insertMany(data.products);
     res.send({ createdProducts});
 }));
@@ -35,11 +47,14 @@ productRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async(req, res) =>{
     const product = new Product({
         c_id:0,
         catogory: 'sample catogory',
+        brand: 'sample brand',
         name: 'sample name' + Date.now(),
         image:'/images/p1.jpg',
         price:0,
         description:'sample description',
-        countInStock:0
+        countInStock:0,
+        rating:0,
+        numReviews:0
 
 
     });
@@ -54,6 +69,7 @@ productRouter.put('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) 
     if(product){
         product.c_id = req.body.c_id;
         product.catogory = req.body.catogory;
+        product.brand = req.body.brand;
         product.name = req.body.name;
         product.image = req.body.image;
         product.price = req.body.price;
