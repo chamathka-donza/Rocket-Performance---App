@@ -1,9 +1,15 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
-import { isAuth } from '../utils.js';
+import { isAdmin, isAuth } from '../utils.js';
 
 const orderRouter = express.Router();
+
+orderRouter.get('/', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({}).populate('user', 'name');
+    res.send(orders);
+
+}))
 
 orderRouter.get('/mine', isAuth, expressAsyncHandler(async(req, res) =>{
     const orders = await Order.find({user: req.user._id});
@@ -34,6 +40,34 @@ orderRouter.get('/:id', isAuth, expressAsyncHandler(async(req, res) => {
     }else {
         res.status(404).send({message: 'Order Not Found'});
     }
-}))
+}));
+
+orderRouter.delete(
+    '/:id',
+    isAuth,
+    isAdmin,
+    expressAsyncHandler(async (req, res) => {
+      const order = await Order.findById(req.params.id);
+      if (order) {
+        const deleteOrder = await order.remove();
+        res.send({ message: 'Order Deleted', order: deleteOrder });
+      } else {
+        res.status(404).send({ message: 'Order Not Found' });
+      }
+    })
+  );
+
+  orderRouter.put('/:id/payment', isAuth, isAdmin, expressAsyncHandler(async (req,res) => {
+      const order = await Order.findById(req.params.id);
+      if(order){
+          order.isPaid = true ;
+          order.paidAt = Date.now();
+
+          const updatedOrder = await order.save();
+          res.send({ message: 'Payment Done', order: updatedOrder});
+      }else{
+          res.status(404).send({ message: 'Order Not Found'});
+      }
+  }))
 
 export default orderRouter ;
