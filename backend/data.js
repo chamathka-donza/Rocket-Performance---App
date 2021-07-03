@@ -54,7 +54,7 @@ products: [
    {
        c_id: 4,
     //    p_id: 4.2,
-       catogory:"exhausts",
+       category:"exhausts",
        brand:"HKS",
        name: "HKS Dual Output Exhaust",
        image: "/images/ex-1.jpg",
@@ -68,7 +68,7 @@ products: [
    {
        c_id: 3,
     //    p_id: 3.1,
-       catogory:"Alloy Wheels",
+       category:"Alloy Wheels",
        brand:"Michigon",
        name: "Michigon Evo 4 Alloy Wheel",
        image: "/images/aw-1.jpg",
@@ -82,7 +82,7 @@ products: [
    {
       c_id: 3,
     //    p_id: 3.2,
-       catogory:"Alloy Wheels",
+       category:"Alloy Wheels",
        brand:"HOOLER",
        name: "HOOLER Evo 4 Alloy Wheel",
        image: "/images/aw-2.jpg",
@@ -96,7 +96,7 @@ products: [
    {
        c_id: 2,
     //    p_id: 2.1,
-       catogory:"bodykits",
+       category:"bodykits",
        brand:"Fiber",
        name: "Lancer Evolution 4",
        image: "/images/evo-4.jpg",
@@ -110,7 +110,7 @@ products: [
    {
        c_id: 2 ,
     //    p_id: 2.2,
-       catogory:"bodykits",
+       category:"bodykits",
        brand:"Fiber",
        name: "Lancer Evolution 6",
        image: "/images/evo-6.jpg",
@@ -124,7 +124,7 @@ products: [
    {
        c_id: 2,
     //    p_id: 2.3,
-       catogory:"bodykits",
+       category:"bodykits",
        brand:"Fiber",
        name: "Lancer Evolution 8",
        image: "/images/evo-8.jpg",

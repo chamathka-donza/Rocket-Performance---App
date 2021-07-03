@@ -1,5 +1,6 @@
 
 import jwt from 'jsonwebtoken';
+import mg from 'mailgun-js';
 
 export const generateToken = (user) =>{
     return jwt.sign({
@@ -40,3 +41,51 @@ export const isAdmin = (req,res,next) =>{
         res.status(401).send({message: 'Invalid Admin Token'});
     }
 } ;
+
+export const mailgun = () => mg({
+    apiKey: process.env.MAILGUN_API_KEY,
+    doamin: process.env.MAILGUN_DOMAIN,
+    
+});
+
+export const payOrderEmailTemplate = (order) => {
+    console.log(order.user.email);
+    return `<h1>Thank You For Connect with Us</h1>
+    <p>
+    Hi ${order.user.name},</p>
+    <p>We have finished processing your order. Once the order is completed we will let you know.</p>
+    <h2>[Order ${order._id}] (${order.createdAt.toString().substring(0, 10)})</h2>
+    <table>
+  <thead>
+  <tr>
+  <td><strong>Product</strong></td>
+  <td><strong>Quantity</strong></td>
+  <td><strong align="right">Price</strong></td>
+  </thead>
+  <tbody>
+  ${order.orderItems
+    .map(
+      (item) => `
+    <tr>
+    <td>${item.name}</td>
+    <td align="center">${item.qty}</td>
+    <td align="right"> $${item.price.toFixed(2)}</td>
+    </tr>
+  `
+    )
+    .join('\n')}
+  </tbody>
+  <tfoot>
+  <tr>
+  <td colspan="2">Items Price:</td>
+  <td align="right"> $${order.itemsPrice.toFixed(2)}</td>
+  </tr>
+ 
+  </table>
+  
+  <p>
+  Thanks for connect with us.
+  </p>
+  `;
+};
+    
