@@ -8,6 +8,7 @@ import productRouter from './routers/productRouter.js';
 import orderRouter from './routers/orderRouter.js';
 import uploadRouter from './routers/uploadRouter.js';
 import path from 'path';
+import projectRouter from './routers/projectRouter.js';
 
 dotenv.config();
  
@@ -43,6 +44,7 @@ app.get('/api/sections', (req, res) =>{
 app.use('/api/uploads', uploadRouter);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
+app.use('/api/projects', projectRouter);
 app.use('/api/orders', orderRouter);
 
 const __dirname = path.resolve();

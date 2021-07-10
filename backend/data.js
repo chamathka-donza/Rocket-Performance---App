@@ -50,6 +50,30 @@ const data ={
    },
 ],
 
+projects: [
+    {
+        brand:"Mitsubishi",
+        model:"Lancer CB-2",
+        conversion:"full conversion",
+        image:"/images/cb2.jpg",
+        owner:"Ravindu Perera",
+    },
+    {
+        brand:"Mitsubishi",
+        model:"Lancer CK-2",
+        conversion:"body conversion",
+        image:"/images/ck2.jpg",
+        owner:"Sandun Ilahalagama",
+    },
+    {
+        brand:"Mitsubishi",
+        model:"Lancer CS-2",
+        conversion:"full conversion",
+        image:"/images/cs2.jpg",
+        owner:"rahul Madhuka",
+    },
+],
+
 products: [
    {
        c_id: 4,
