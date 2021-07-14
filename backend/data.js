@@ -49,6 +49,48 @@ const data ={
        
    },
 ],
+adminSections: [
+    {
+        A_id: '1',
+        name: "Dashboard",
+        image: "/images/dashboard.jpg",
+       
+        
+    },
+    {
+        A_id: '2',
+        name: "Products",
+        image: "/images/product.jpeg",
+        
+    },
+    {
+        A_id: '3',
+        name: "Orders",
+        image: "/images/orders.jpg",
+        
+    },
+    {
+        A_id: '4',
+        name: "Reservations",
+        image: "/images/reservation.jpg",
+        
+        
+    },
+    {
+        A_id: '5',
+        name: "Past Projects",
+        image: "/images/project.jpg",
+        
+        
+    },
+    {
+        A_id: '6',
+        name: "Users",
+        image: "/images/user.jpg",
+        
+        
+    },
+ ],
 
 projects: [
     {
@@ -76,9 +118,9 @@ projects: [
 
 products: [
    {
-       c_id: 4,
-    //    p_id: 4.2,
-       category:"exhausts",
+      
+    
+       category:"Exhaust Kits",
        brand:"HKS",
        name: "HKS Dual Output Exhaust",
        image: "/images/ex-1.jpg",
@@ -90,8 +132,7 @@ products: [
       
    },
    {
-       c_id: 3,
-    //    p_id: 3.1,
+       
        category:"Alloy Wheels",
        brand:"Michigon",
        name: "Michigon Evo 4 Alloy Wheel",
@@ -104,8 +145,7 @@ products: [
        
    },
    {
-      c_id: 3,
-    //    p_id: 3.2,
+      
        category:"Alloy Wheels",
        brand:"HOOLER",
        name: "HOOLER Evo 4 Alloy Wheel",
@@ -118,9 +158,8 @@ products: [
       
    },
    {
-       c_id: 2,
-    //    p_id: 2.1,
-       category:"bodykits",
+       
+       category:"Body Kits",
        brand:"Fiber",
        name: "Lancer Evolution 4",
        image: "/images/evo-4.jpg",
@@ -132,9 +171,8 @@ products: [
        
    },
    {
-       c_id: 2 ,
-    //    p_id: 2.2,
-       category:"bodykits",
+       
+       category:"Body Kits",
        brand:"Fiber",
        name: "Lancer Evolution 6",
        image: "/images/evo-6.jpg",
@@ -146,9 +184,8 @@ products: [
        
    },
    {
-       c_id: 2,
-    //    p_id: 2.3,
-       category:"bodykits",
+       
+       category:"Body Kits",
        brand:"Fiber",
        name: "Lancer Evolution 8",
        image: "/images/evo-8.jpg",

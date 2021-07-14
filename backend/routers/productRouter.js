@@ -7,18 +7,18 @@ import { generateToken, isAdmin, isAuth } from '../utils.js';
 const productRouter = express.Router();
 
 productRouter.get('/', expressAsyncHandler(async(req, res) =>{
-    // const name = req.query.name || '';
+    const name = req.query.name || '';
     // const category = req.query.category || '';
     // // const brand = req.query.brand || '';
     // const min = req.query.min && Number(req.query.min) !== 0 ? Number(req.query.min) : 0;
     // const max = req.query.max && Number(req.query.max) !== 0 ? Number(req.query.max) : 0;
 
-    // const nameFilter = name ? {name: {$regex: name, $options: 'i'}} : {};
+    const nameFilter = name ? {name: {$regex: name, $options: 'i'}} : {};
     // const categoryFilter = category ? { category } : {};
     // const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
     // const brandFilter = brand ? { brand } : {};
     const products = await Product.find(
-        // {...nameFilter, ...categoryFilter, ...priceFilter}
+        // {...nameFilter}
         )
         // .populate();
     res.send(products);
@@ -39,9 +39,6 @@ productRouter.get(
 }));
 
 productRouter.get('/:id', expressAsyncHandler(async(req, res) =>{
-    // const product = await Product.findById(req.params.id);
-    // const product = data.products.filter(p => {if(p._id == req.params.id) return true})
-    // console.log("crt id", req.params.id)
     const product = await Product.findById(req.params.id);
     if(product){
         res.send(product);
@@ -52,7 +49,7 @@ productRouter.get('/:id', expressAsyncHandler(async(req, res) =>{
 
 productRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async(req, res) =>{
     const product = new Product({
-        c_id:0,
+        
         category: 'sample category',
         brand: 'sample brand',
         name: 'sample name' + Date.now(),
@@ -75,7 +72,7 @@ productRouter.put('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) 
     const productId = req.params.id;
     const product = await Product.findById(productId);
     if(product){
-        product.c_id = req.body.c_id;
+        
         product.category = req.body.category;
         product.brand = req.body.brand;
         product.name = req.body.name;
@@ -103,8 +100,10 @@ productRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async(req, res
 
 productRouter.post('/:id/reviews ', isAuth, expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
-    const product = await Product.findById(productId);
+    const product = await Product.findById(req.params.id);
+    console.log("product");
     if(product){
+       
         if(product.reviews.find(x => x.name === req.user.name)) {
             return res.status(400).send({message: 'You Already Submitted a Review'});
         }
@@ -116,6 +115,7 @@ productRouter.post('/:id/reviews ', isAuth, expressAsyncHandler(async (req, res)
         res.status(201).send({message:'Review Added', review: updatedProduct.reviews[updatedProduct.reviews.length - 1],});
 
     }else{
+        
         res.status(404).send({message:'Product Not Found'});
     }
 }));
