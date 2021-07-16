@@ -28,12 +28,12 @@ app.use(cors())
 
 app.get('/api/sections', (req, res) =>{
     res.send(data.sections);
-    // console.log(data.sections);
+    // console.log("data.sections");
 });
 
 app.get('/api/adminSections', (req, res) =>{
     res.send(data.adminSections);
-    // console.log(data.sections);
+    // console.log("admi Sec", data.adminSections);
 });
 
 app.use('/api/uploads', uploadRouter);

@@ -60,13 +60,13 @@ adminSections: [
     {
         A_id: '2',
         name: "Products",
-        image: "/images/product.jpeg",
+        image: "/images/products.jpg",
         
     },
     {
         A_id: '3',
         name: "Orders",
-        image: "/images/orders.jpg",
+        image: "/images/order.jpg",
         
     },
     {
