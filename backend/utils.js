@@ -69,7 +69,7 @@ export const payOrderEmailTemplate = (order) => {
     <tr>
     <td>${item.name}</td>
     <td align="center">${item.qty}</td>
-    <td align="right"> $${item.price.toFixed(2)}</td>
+    <td align="right"> Rs. ${item.price.toFixed(2)}</td>
     </tr>
   `
     )
@@ -78,8 +78,41 @@ export const payOrderEmailTemplate = (order) => {
   <tfoot>
   <tr>
   <td colspan="2">Items Price:</td>
-  <td align="right"> $${order.itemsPrice.toFixed(2)}</td>
+  <td align="right"> Rs. ${order.itemsPrice.toFixed(2)}</td>
   </tr>
+ 
+  </table>
+  
+  <p>
+  Thanks for connect with us.
+  </p>
+  `;
+};
+
+export const placeReservationEmailTemplate = (reservation) => {
+    console.log(reservation.user.email);
+    return `<h1>Thank You For Connect with Us</h1>
+    <p>
+    Hi ${reservation.user.name},</p>
+    <p>Your Reservation has been placed successfully.</p>
+    <h2>[Reservation ${reservation._id}] (${reservation.createdAt.toString().substring(0, 10)})</h2>
+    <table>
+  <thead>
+  <tr>
+  <td><strong>Date</strong></td>
+  <td><strong>Time Slot</strong></td>
+  <td><strong align="right">Vehicle No</strong></td>
+  </thead>
+  <tbody>
+    
+    <tr>
+    <td>${reservation.date}</td>
+    <td align="center">${reservation.timePeriod}</td>
+    <td align="right"> ${reservation.vehicleNo}</td>
+    </tr>
+  
+  </tbody>
+  <tfoot>
  
   </table>
   
