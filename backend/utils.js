@@ -54,13 +54,14 @@ export const payOrderEmailTemplate = (order) => {
     <p>
     Hi ${order.user.name},</p>
     <p>We have finished processing your order. Once the order is completed we will let you know.</p>
-    <h2>[Order ${order._id}] (${order.createdAt.toString().substring(0, 10)})</h2>
-    <table>
+    <h2>[Order ${order.OrderID}] (${order.createdAt.toString().substring(0, 10)})</h2>
+    <table style="border-collapse: collapse">
   <thead>
   <tr>
   <td><strong>Product</strong></td>
   <td><strong>Quantity</strong></td>
-  <td><strong align="right">Price</strong></td>
+  <td><strong>Price of single quantity</strong></td>
+  <td><strong align="right">Total Items Price</strong></td>
   </thead>
   <tbody>
   ${order.orderItems
@@ -69,20 +70,28 @@ export const payOrderEmailTemplate = (order) => {
     <tr>
     <td>${item.name}</td>
     <td align="center">${item.qty}</td>
-    <td align="right"> Rs. ${item.price.toFixed(2)}</td>
+    <td align="center"> Rs. ${item.price.toFixed(2)}</td>
+    <td align="center"> Rs. ${(item.qty*item.price).toFixed(2)}.00</td>
+    <td
     </tr>
   `
     )
     .join('\n')}
   </tbody>
+  <hr/>
   <tfoot>
   <tr>
-  <td colspan="2">Items Price:</td>
+  <td colspan="2">Total Price:</td>
   <td align="right"> Rs. ${order.itemsPrice.toFixed(2)}</td>
+  </tr>
+  <tr>
+  <td colspan="2">Down Payment:</td>
+  <td align="right"> Rs. ${(0.25*order.itemsPrice).toFixed(2)}</td>
   </tr>
  
   </table>
   
+  <p>We receive a down payment of Rs. ${(0.25*order.itemsPrice).toFixed(2)} . We proceed with the order and inform you soon when the order is completed.</p> 
   <p>
   Thanks for connect with us.
   </p>
@@ -116,6 +125,55 @@ export const placeReservationEmailTemplate = (reservation) => {
  
   </table>
   
+  <p>
+  Thanks for connect with us.
+  </p>
+  `;
+};
+
+export const completeOrderEmailTemplate = (order) => {
+    console.log(order.user.email);
+    return `<h1>Thank You For Connect with Us</h1>
+    <p>
+    Hi ${order.user.name},</p>
+    <p>Your order has been completed. Please visit the shop to collect the order.</p>
+    <h2>[Order ${order.OrderID}] (${order.createdAt.toString().substring(0, 10)})</h2>
+    <table style="border-collapse: collapse">
+  <thead>
+  <tr>
+  <td><strong>Product</strong></td>
+  <td><strong>Quantity</strong></td>
+  <td><strong>Price of single quantity</strong></td>
+  <td><strong align="right">Total Items Price</strong></td>
+  </thead>
+  <tbody>
+  ${order.orderItems
+    .map(
+      (item) => `
+    <tr>
+    <td>${item.name}</td>
+    <td align="center">${item.qty}</td>
+    <td align="center"> Rs. ${item.price.toFixed(2)}</td>
+    <td align="center"> Rs. ${(item.qty*item.price).toFixed(2)}</td>
+    <td
+    </tr>
+  `
+    )
+    .join('\n')}
+  </tbody>
+  <hr/>
+  <tfoot>
+  <tr>
+  <td colspan="2">Total Price:</td>
+  <td align="right"> Rs. ${order.itemsPrice.toFixed(2)}</td>
+  </tr>
+  <tr>
+  <td colspan="2">Down Payment:</td>
+  <td align="right"> Rs. ${(0.25*order.itemsPrice).toFixed(2)}</td>
+  </tr>
+ 
+  </table>
+   
   <p>
   Thanks for connect with us.
   </p>

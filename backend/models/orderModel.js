@@ -23,11 +23,14 @@ const orderSchema = new mongoose.Schema({
     //     phone: {type: Number, required:true},
     // },
 
+    OrderID: {type: String, required: true },
     itemsPrice: {type: Number, required: true},
     // totalPrice: {type: Number, required: true},
     user: {type: mongoose.Schema.Types.ObjectId, ref:'User', required: true},
     isPaid:{type: Boolean, default: false},
     paidAt: { type: Date},
+    orderComplete:{type: Boolean, default: false},
+    orderCompleteAt: { type: Date},
 },
 {
     timestamps: true,

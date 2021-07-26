@@ -3,7 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
 import User from '../models/userModel.js';
-import { isAdmin, isAuth, mailgun, payOrderEmailTemplate } from '../utils.js';
+import { isAdmin, isAuth, mailgun, payOrderEmailTemplate, completeOrderEmailTemplate } from '../utils.js';
 
 import nodemailer from 'nodemailer';
 import nodemailMailGun from 'nodemailer-mailgun-transport';
@@ -31,6 +31,7 @@ orderRouter.post('/', isAuth, expressAsyncHandler(async(req, res) =>{
          const order = new Order({
              orderItems: req.body.orderItems,
              // customerDetails: req.body.customerDetails,
+             OrderID: req.body.OrderID,
              itemsPrice: req.body.itemsPrice,
              // totalPrice: req.body.totalPrice,
              user: userOb,
@@ -52,7 +53,7 @@ orderRouter.post('/', isAuth, expressAsyncHandler(async(req, res) =>{
 }));
 
 orderRouter.get('/:id', isAuth, expressAsyncHandler(async(req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate([{path: 'product', model: 'Product'}, { path: 'user', model: 'User'}]);;
     if(order){
         res.send(order);
     }else {
@@ -95,7 +96,7 @@ orderRouter.delete(
         let mailContent={
             from:'RocketPerformance@mg.yourdomain.com',
             to:`${order.user.name}<${order.user.email }>`,
-            subject:`New order ${order._id}`,
+            subject:`New order ${order.OrderID}`,
             html: payOrderEmailTemplate(order),
         };
         
@@ -107,25 +108,48 @@ orderRouter.delete(
                 console.log(`Email send successfully`)
             }
         });
-
-        //   console.log('tem',payOrderEmailTemplate(order))
-        //   mailgun().messages().send({
-        //       from:'RocketPerformance@mg.yourdomain.com',
-        //       to:`${order.user.name}<${order.user.email }>`,
-        //       subject:`New order ${order._id}`,
-        //       html: payOrderEmailTemplate(order),
-        //   }, (error, body) => {
-        //       if(error){
-        //           console.log("Error",error);
-        //       }else{
-        //           console.log("Mail Success", body);
-                  
-        //       }
-        //   }); 
           res.send({ message: 'Payment Done', order: updatedOrder});
       }else{
           res.status(404).send({ message: 'Order Not Found'});
       }
   }))
+
+  orderRouter.put('/:id/complete', isAuth, isAdmin, expressAsyncHandler(async (req,res) => {
+    const order = await Order.findById(req.params.id).populate('user', 'email name');
+    if(order){
+        order.orderComplete = true ;
+        order.orderCompleteAt = Date.now();
+
+        const updatedOrder = await order.save();
+
+        let emailAuth = {
+          auth : {
+              api_key: process.env.MAILGUN_API_KEY,
+              domain: process.env.MAILGUN_DOMAIN,
+          }
+      }
+      
+      let transporter = nodemailer.createTransport(nodemailMailGun(emailAuth))
+      
+      let mailContent={
+          from:'RocketPerformance@mg.yourdomain.com',
+          to:`${order.user.name}<${order.user.email }>`,
+          subject:`Order is cpmpleted ${order.OrderID}`,
+          html: completeOrderEmailTemplate(order),
+      };
+      
+      transporter.sendMail(mailContent, function(error, data){
+          if(error){
+              console.log(`Unable to send mail`, error)
+          }
+          else{
+              console.log(`Email send successfully`)
+          }
+      });
+        res.send({ message: 'Order Complete', order: updatedOrder});
+    }else{
+        res.status(404).send({ message: 'Order Not Found'});
+    }
+}))
 
 export default orderRouter ;

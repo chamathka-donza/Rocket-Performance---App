@@ -120,13 +120,14 @@ productRouter.post('/reviews/:id', isAuth, expressAsyncHandler(async (req, res) 
     // console.log("product", product);
     if(product){
        
-        if(product.reviews.find(x => x.name === req.user.name)) {
-            return res.status(400).send({message: 'You Already Submitted a Review'});
-        }
+        // if(product.reviews.find(x => x.name === req.user.name)) {
+        //     return res.status(400).send({message: 'You Already Submitted a Review'});
+        // }
         const review = {name: req.user.name, rating: Number(req.body.rating), comment: req.body.comment,};
         product.reviews.push(review);
         product.numReviews = product.reviews.length;
         product.rating = product.reviews.reduce((a,c) => c.rating + a, 0 )/ product.reviews.length;
+        console.log("product",product)
         const updatedProduct = await product.save();
         res.status(201).send({message:'Review Added', review: updatedProduct.reviews[updatedProduct.reviews.length - 1],});
 

@@ -53,40 +53,47 @@ adminSections: [
     {
         A_id: '1',
         name: "Dashboard",
-        image: "/images/dashboard.jpg",
+        image: "/images/dashboard.png",
        
         
     },
     {
         A_id: '2',
         name: "Products",
-        image: "/images/products.jpg",
+        image: "/images/product1.png",
         
     },
     {
         A_id: '3',
         name: "Orders",
-        image: "/images/order.jpg",
+        image: "/images/order.png",
         
     },
     {
         A_id: '4',
         name: "Reservations",
-        image: "/images/reservation.jpg",
+        image: "/images/reservation.png",
         
         
     },
     {
         A_id: '5',
         name: "Past Projects",
-        image: "/images/project.jpg",
+        image: "/images/project1.png",
         
         
     },
     {
         A_id: '6',
+        name: "Reports",
+        image: "/images/reports.png",
+        
+        
+    },
+    {
+        A_id: '7',
         name: "Users",
-        image: "/images/user.jpg",
+        image: "/images/user.png",
         
         
     },
